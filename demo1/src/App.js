@@ -2,6 +2,11 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
+// import child components to parent component
+import {TodoBanner} from './TodoBanner'
+import {TodoRow} from './TodoRow'
+import {TodoCreator} from './TodoCreator'
+
 //Adding Dynaimc Data to our react app
 
 export default class App extends Component {
@@ -17,7 +22,7 @@ export default class App extends Component {
           { action : "Study Programming", done: false},
           { action : "My friend", done: true}
         ],
-        newItemText : " "
+        // newItemText : " "
       }
     }
 
@@ -25,24 +30,26 @@ export default class App extends Component {
       this.setState({ newItemText : event.target.value })
     }
 
-    createNewTodo =() => {
+    createNewTodo =(task) => {
       if (!this.state.todoItems
-                .find(item => item.action === this.state.newItemText)) {
+                .find(item => item.action === task)) {
                   this.setState({
                     // spread period
                     todoItems : [...this.state.todoItems,
-                                  {action: this.state.newItemText,
+                                  {action: task,
                                     done: false}],
-                                    newItemText : ""
+                                    // newItemText : ""
                   });
                 }
     }
 
+    /*
     changeStateData =() => {
       this.setState(
         { userName: this.state.userName == "Sina" ? "Alex" : "Sina" }
       )
     }
+    */
 
     toggleTodo = (todo) => this.setState({
       todoItems : this.state.todoItems.map(
@@ -51,33 +58,20 @@ export default class App extends Component {
 
       todoTableRows =() => this.state.todoItems.map(
         item => 
-        <tr key={item.action}>
-          <td> {item.action} </td>
-          <td> <input type="checkbox" checked={item.done}
-                      onChange={ () => this.toggleTodo(item)}/>
-          </td>
-        </tr>
+        <TodoRow key={item.action} item={item}
+        callback={this.toggleTodo}/>
       );
 
   render =() =>
     <div>
-      <h4 className="bg-primary text-white text-center p-2">
-        { this.state.userName } you have
-        ({this.state.todoItems.filter(t=>!t.done).length}) incomplete taskes
-      </h4>
+      
+      <TodoBanner name={this.state.userName}
+                  tasks={this.state.todoItems}/>
 
-      <div className="container-fludi">
-        <div className="m-1">
-          <input className="form-control"
-                  value = {this.state.newItemText}
-                  onChange={this.updateNewTextValue} />
-
-                  <button className="btn btn-danger mt-1"
-                          onClick={this.createNewTodo}>
-                            Add New Task
-                  </button>
-        </div>
-
+      <div className="container-fluid">
+        
+        <TodoCreator callback={this.createNewTodo}/>
+        
         <table className="table table-strip table-bordered">
           <thead>
             <tr>
