@@ -44,11 +44,26 @@ export default class App extends Component {
       )
     }
 
+    toggleTodo = (todo) => this.setState({
+      todoItems : this.state.todoItems.map(
+        item => item.action === todo.action ? { ...item, done: !item.done} : item )
+      });
+
+      todoTableRows =() => this.state.todoItems.map(
+        item => 
+        <tr key={item.action}>
+          <td> {item.action} </td>
+          <td> <input type="checkbox" checked={item.done}
+                      onChange={ () => this.toggleTodo(item)}/>
+          </td>
+        </tr>
+      );
+
   render =() =>
     <div>
       <h4 className="bg-primary text-white text-center p-2">
-        { this.state.userName }'s Todo List
-        ({this.state.todoItems.filter(t=>!t.done).length}) items todo
+        { this.state.userName } you have
+        ({this.state.todoItems.filter(t=>!t.done).length}) incomplete taskes
       </h4>
 
       <div className="container-fludi">
@@ -62,6 +77,19 @@ export default class App extends Component {
                             Add New Task
                   </button>
         </div>
+
+        <table className="table table-strip table-bordered">
+          <thead>
+            <tr>
+              <th> Todo Task Name </th>
+              <th> Done </th>
+            </tr>
+          </thead>
+          <tbody>
+            {this.todoTableRows()}
+          </tbody>
+        </table>
+        
       </div>
     </div>
   }
