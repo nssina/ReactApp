@@ -1,6 +1,3 @@
-// 2nd Child Component
-// Do only one Feature
-
 import React, { Component } from 'react';
 
 export class TodoRow extends Component {
