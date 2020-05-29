@@ -1,6 +1,6 @@
 import React, {Component, useCallback} from 'react';
 
-export class SimpleBtn extends Component {
+export default class App extends Component {
   constructor(props) {
     super(props);
 
