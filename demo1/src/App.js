@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
 
 // import child components to parent component
@@ -39,19 +38,12 @@ export default class App extends Component {
                     // spread period
                     todoItems : [...this.state.todoItems,
                                   {action: task,
-                                    done: false}],
+                                    done: false}]},
+                () => localStorage.setItem("todo", JSON.stringify(this.state)))
+
                                     // newItemText : ""
-                  });
                 }
     }
-
-    /*
-    changeStateData =() => {
-      this.setState(
-        { userName: this.state.userName == "Sina" ? "Alex" : "Sina" }
-      )
-    }
-    */
 
     toggleTodo = (todo) => this.setState({
       todoItems : this.state.todoItems.map(
@@ -65,6 +57,22 @@ export default class App extends Component {
         <TodoRow key={item.action} item={item}
         callback={this.toggleTodo}/>
       );
+
+      // Load / Get the kept data
+
+      componentDidMount =() => {
+        let data = localStorage.getItem("todo");
+        this.setState( data!=null ? JSON.parse(data) : {
+          userName : "Sina",
+        todoItems : [
+          { action : "Buy a flower", done: false},
+          { action : "Do Workout", done: true},
+          { action : "Study Programming", done: false},
+          { action : "My friend", done: true}
+        ],
+        showCompeleted : true
+        });
+      }
 
   render =() =>
     <div>
